@@ -16,7 +16,7 @@ export const insightAgentMastra = new Agent({
 
 Your workflow:
 1. Start by fetching available KPIs using the fetch-kpis tool
-2. Show the user the list of available KPIs with their index number , names , display description as easily understandable text , formula , table name in table format.
+2. Show the user the list of available KPIs with their index number , names , description , formula , table name.
 3. Ask the user which KPI(s) they want to analyze
 4. Ask what kind of insight they're looking for (trend analysis, comparison, threshold alert, etc.)
 5. Use the run-query tool to execute relevant KPI queries and gather data
