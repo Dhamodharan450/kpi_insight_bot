@@ -106,10 +106,13 @@ export async function runQuery(sql: string, sample = 5): Promise<any[]> {
   return res.rows;
 }
 
-export async function fetchKPIs(): Promise<{ name: string; formula: string; table_name?: string | null; columns?: string[] | null }[]> {
-  const res = await pool.query(`SELECT name, formula, table_name, columns FROM kpi ORDER BY name;`);
+export async function fetchKPIs(): Promise<{ name: string; formula: string; description?: string | null; table_name?: string | null; columns?: string[] | null }[]> {
+  const res = await pool.query(`SELECT name, formula, description, table_name, columns FROM kpi ORDER BY name;`);
   return res.rows.map((r) => ({
-    ...r,
+    name: r.name,
+    formula: r.formula,
+    description: r.description ?? undefined,
+    table_name: r.table_name ?? undefined,
     columns: r.columns ? (Array.isArray(r.columns) ? r.columns : JSON.parse(r.columns)) : undefined,
   }));
 }
