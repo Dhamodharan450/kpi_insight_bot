@@ -1,7 +1,40 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { insertInsight } from './db_shared';
+import { insertInsight, fetchKPIs } from './db_shared';
 
+
+
+export const fetchKPIsTool = createTool({
+  id: 'fetch-kpis',
+  description: 'Fetches all KPIs from the database',
+  inputSchema: z.object({}),
+  outputSchema: z.object({
+    kpis: z.array(
+      z.object({
+        name: z.string(),
+        formula: z.string(),
+        description: z.string().optional(),
+        easy_description: z.string().optional(),
+        table_name: z.string().optional(),
+        columns: z.array(z.string()).optional(),
+      })
+    ),
+  }),
+  execute: async ({ context }) => {
+    const kpisRaw = await fetchKPIs();
+    // normalize null values to undefined
+    const kpis = kpisRaw.map((r) => ({
+      name: r.name,
+      formula: r.formula,
+      description: r.description ?? undefined,
+      table_name: r.table_name ?? undefined,
+      columns: r.columns ?? undefined,
+    }));
+    return { kpis };
+  },
+});
+
+// --- Insight tool moved here to consolidate DB-related tools ---
 export const saveInsightTool = createTool({
   id: 'save-insight',
   description: 'Saves an insight definition to the database',
@@ -33,3 +66,4 @@ export const saveInsightTool = createTool({
     return { success: true, message: `Insight '${context.name}' saved successfully` };
   },
 });
+
