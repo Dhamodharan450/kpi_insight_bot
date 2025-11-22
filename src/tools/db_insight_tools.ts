@@ -1,6 +1,23 @@
 import { createTool } from '@mastra/core/tools';
 import { z } from 'zod';
-import { insertInsight, fetchKPIs } from './db_shared';
+import { insertInsight, fetchKPIs, runQuery as sharedRunQuery } from './db_shared';
+
+
+export const runQueryTool = createTool({
+  id: 'run-query',
+  description: 'Executes a SQL query and returns sample results',
+  inputSchema: z.object({
+    sql: z.string().describe('SQL query to execute'),
+    limit: z.number().optional().describe('Number of rows to return').default(5),
+  }),
+  outputSchema: z.object({
+    rows: z.array(z.any()),
+  }),
+  execute: async ({ context }) => {
+    const rows = await sharedRunQuery(context.sql, context.limit ?? 5);
+    return { rows };
+  },
+});
 
 
 
