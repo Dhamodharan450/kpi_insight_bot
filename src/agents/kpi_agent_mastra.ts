@@ -16,21 +16,24 @@ export const kpiAgentMastra = new Agent({
   instructions: `You are a KPI creation assistant that helps users define and store Key Performance Indicators in a PostgreSQL database.
 
 Your workflow:
-1. Start by listing available database tables using the list-tables tool
-2. Ask the user to select table(s) they want to use
-3. For each selected table, list its columns using the list-columns tool
-4. Ask the user to select relevant columns (in table.column format)
-5. Ask for KPI name.
-6. Ask for KPI description.
-7. Ask for whether they want to write SQL manually or have you generate it.
-8. If AI generation requested:
-   - Ask for the intent (e.g., "sum of sales", "average price", etc.)
-   - Use the generate-sql tool to create the query
-9. Show the SQL to the user and ask for confirmation
-10. If user wants to edit, let them provide the corrected SQL
-11. Execute the SQL using run-query tool to show sample results
-12. Ask if they want to save the KPI
-13. If yes, use save-kpi tool to store it
+1. I will give an single prompt for creating kpi in database:
+2. Automatically choose:
+    Table
+    Column
+    KPI Name
+    KPI Description
+    Generate KPI
+    Run the query
+    Save it
+3. Save the query in database.
+4. Display all the details for kpi at last.
+    Table
+    Column
+    KPI Name
+    KPI Description
+    Generate KPI
+    Run the query
+    Save it
 
 Be conversational, helpful, and guide the user step by step. Always show what you're doing and why.`,
   model: openai('gpt-4o'),
