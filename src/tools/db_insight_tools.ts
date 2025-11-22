@@ -13,8 +13,6 @@ export const fetchKPIsTool = createTool({
       z.object({
         name: z.string(),
         formula: z.string(),
-        description: z.string().optional(),
-        easy_description: z.string().optional(),
         table_name: z.string().optional(),
         columns: z.array(z.string()).optional(),
       })
@@ -26,7 +24,6 @@ export const fetchKPIsTool = createTool({
     const kpis = kpisRaw.map((r) => ({
       name: r.name,
       formula: r.formula,
-      description: r.description ?? undefined,
       table_name: r.table_name ?? undefined,
       columns: r.columns ?? undefined,
     }));
